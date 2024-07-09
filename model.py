@@ -1,29 +1,29 @@
 import torch as th
 import torch.nn as nn
-from blocks import block1, block2, up_block1
+from blocks import down, up
 from parts import Residual
 
 class UNET(nn.Module):
     def __init__(self, num_classes):
         super(UNET, self).__init__()
         self.pool1 = nn.MaxPool2d(2, 2)
-        
+
+        self.down1 = down(1, 64)
+        self.down2 = down(64, 128)
+        self.down3 = down(128, 256)
+        self.down4 = down(256, 512)
+        self.down5 = down(512, 1024)
+
+        self.up1 = up(1024, 512)
+        self.up2 = up(512, 256)
+        self.up3 = up(256, 128)
+        self.up4 = up(128, 64)
+
         self.up_conv1 = nn.ConvTranspose2d(1024, 512, 2)
         self.up_conv2 = nn.ConvTranspose2d(512, 256, 2)
         self.up_conv3 = nn.ConvTranspose2d(256, 128, 2)
         self.up_conv4 = nn.ConvTranspose2d(128, 64)
-
-        self.down1 = block1(1, 64)
-        self.down2 = block2(64)
-        self.down3 = block2(128)
-        self.down4 = block2(256)
-        self.down5 = block2(512)
-
-        self.up1 = up_block1(1024)
-        self.up2 = up_block1(512)
-        self.up3 = up_block1(256)
-        self.up4 = up_block1(128)
-
+        
         self.conv = nn.Conv2d(64, num_classes, 1)
 
     def forward(self, x):

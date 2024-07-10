@@ -3,6 +3,7 @@
 ## TO-DO
 - [x] Define Contracting/Expansive Path [7/8 ~ 7/10]
 - [ ] Codes for loading dataset [7/10 ~ 7/11]
+- [ ] Add additional functions
 - [ ] Train / Test Model
 - [ ] Refactoring 
 - [ ] Results

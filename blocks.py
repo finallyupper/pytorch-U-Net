@@ -5,28 +5,22 @@ import torchvision
 import torchvision.transforms as transforms
 from torchvision.transforms import CenterCrop 
 
-
 class Block(nn.Module):
       """Conv - ReLU - Conv - ReLU"""
       def __init__(self, in_channels, out_channels):
+            super(Block, self).__init__()
             self.in_channels = in_channels 
             self.out_channels = out_channels 
 
             self.block = nn.Sequential(
                   nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
                   nn.ReLU(),
-                  nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1), # -> 2x2 maxpooling w/ stride = 2
-                  nn.ReLU()
+                  nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
+                  nn.ReLU() #TODO : Add BatchNorm2d
             )
 
       def forward(self, x):
             return self.block(x)
-
-"""
-    Intermediate : 2x2Maxpooling(s=2) -> Block(Conv - ReLU - Conv - ReLU)
-    Initial : Block(Conv - ReLU - Conv - ReLU)
-
-"""
      
 class Down(nn.Module):
       """
@@ -34,6 +28,7 @@ class Down(nn.Module):
       2x2Maxpooling(s=2) -> Block(Conv - ReLU - Conv - ReLU)
       """
       def __init__(self, in_channels, out_channels):
+            super(Down, self).__init__()
             self.in_channels = in_channels 
             self.out_channels = out_channels 
 
@@ -50,15 +45,16 @@ class Up(nn.Module):
       2x2deconv - concat - Block(Conv - ReLU - Conv - ReLU)
       """
       def __init__(self, in_channels, out_channels):
+            super(Up, self).__init__()
             self.in_channels = in_channels 
             self.out_channels = out_channels 
-            self.deconv = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size= 2, size = 2) # ex. (52 - 1)*2+2=104   <- W_out = (W_in - 1)xS + K
-            self.block = Block(self.in_channels, self.out_channels)\
+            self.deconv = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size= 2, stride = 2) # ex. (52 - 1)*2+2=104   <- W_out = (W_in - 1)xS + K
+            self.block = Block(self.in_channels, self.out_channels)
             
-      def forward(self, down, up): # init에서 up_block을 정의하지 않은 이유는 concat 과정을 포함하기 때문에 복잡해서
+      def forward(self, down, up):
           up = self.deconv(up)
 
-          d_h, d_w = down.size()[2], down.size()[3] # down.size() = [batch, channel, height, width]
+          d_h, d_w = down.size()[2], down.size()[3] # [batch, channel, height, width]
           u_h, u_w = up.size()[2], up.size()[3]
 
           diff_w = (int)((d_w - u_w) / 2)
@@ -80,7 +76,8 @@ class Up(nn.Module):
             return down 
 
 class OutUp(nn.Module):
-      def __init__(self, in_channels, out_channels): # out_channels = num_classes
+      def __init__(self, in_channels, out_channels): 
+            super(OutUp, self).__init__()
             self.in_channels = in_channels 
             self.out_channels = out_channels 
             self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)

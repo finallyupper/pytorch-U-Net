@@ -1,0 +1,15 @@
+train:
+  data_root: /data/Cityscapes
+  batch_size: 4
+  image_size: [256, 512]
+  learning_rate: 0.001
+  epochs: 10
+  model_path: 'checkpoints/' # Save path for model
+
+inference:
+  model_path: 'checkpoints/unet_epoch_10_loss_0.230.pth'
+  data_root: /data/Cityscapes/
+  image_size: [256, 512]
+  batch_size: 2
+  threshold: 0.4
+  save_path: 'results/'

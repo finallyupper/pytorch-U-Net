@@ -1,5 +1,5 @@
 # U-Net pytorch Implementation
-This repository contains pytorch implementation of [U-Net](https://arxiv.org/abs/1505.04597) architectures. The number of classes used for training is 4 currently (road, sky, car, unlabelled). 
+This repository contains pytorch implementation of [U-Net](https://arxiv.org/abs/1505.04597) architectures using [Cityscapes](https://www.cityscapes-dataset.com/) dataset. The number of classes used for training is 4 currently (road, sky, car, unlabelled). 
 
 ## Examples
 ![sample1](./results/pred_berlin_000000_000019_leftImg8bit.png)

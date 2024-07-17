@@ -10,3 +10,5 @@
 
 ## Dataset 
 - Cityscapes (https://paperswithcode.com/dataset/cityscapes)
+
+- [a label and all meta information](https://github.com/mcordts/cityscapesScripts/blob/master/cityscapesscripts/helpers/labels.py)

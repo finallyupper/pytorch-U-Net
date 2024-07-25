@@ -33,8 +33,8 @@ python inference.py
 ```
 ## Results
 <p float="left">
-  <img src="/home/yoojinoh/Others/pytorch-U-Net/results/wandb_train_loss.png" width="49%" />
-  <img src="/home/yoojinoh/Others/pytorch-U-Net/results/wandb_valid_loss.png" width="49%" />
+  <img src="./results/wandb_train_loss.png" width="49%" />
+  <img src="./results/wandb_valid_loss.png" width="49%" />
 </p>
 
 ## Dataset 

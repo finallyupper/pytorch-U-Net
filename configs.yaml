@@ -5,11 +5,14 @@ train:
   learning_rate: 0.001
   epochs: 10
   model_path: 'checkpoints/' # Save path for model
+  project: 'pytorch-U-Net' # Wandb project name 
+  entity: 'finallyupper' # Wandb entity name
+  name: 'unet' # Wandb run name
 
 inference:
-  model_path: 'checkpoints/unet_epoch_10_loss_0.230.pth'
+  model_path: 'checkpoints/checkpoint.pth'
   data_root: /data/Cityscapes/
   image_size: [256, 512]
   batch_size: 2
   threshold: 0.4
-  save_path: 'results/'
+  save_path: './results/'

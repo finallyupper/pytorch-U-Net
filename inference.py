@@ -1,15 +1,10 @@
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 import torch as th
-from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss 
-from torch.optim import Adam 
 import os 
 import glob 
-import cv2 
 from datasets import CityscapesDataset 
 from model import UNET 
 from utils import load_yaml
-import time
-from tqdm.auto import tqdm 
 from PIL import Image 
 import torch.nn.functional as F
 import numpy as np 
@@ -48,8 +43,9 @@ def inference(model, device, test_loader, threshold=0.5, save_dir='predictions')
             pred_masks = th.argmax(preds, dim=1).numpy()
 
             for i, (pred_mask, image) in enumerate(zip(pred_masks, images)):
-                save_path = os.path.join(save_dir, f'pred_{fns[i].split("/")[-1]}')
-                save_prediction(pred_mask, image, save_path)
+                if i % 5 == 0:
+                    save_path = os.path.join(save_dir, f'pred_{fns[i].split("/")[-1]}')
+                    save_prediction(pred_mask, image, save_path)
 
 def main():
     device = th.device('cuda:2' if th.cuda.is_available() else 'cpu')
@@ -74,7 +70,7 @@ def main():
     # Load model
     unet = UNET(in_channels=3, num_classes=test_dataset.num_classes).to(device)
     state_dict = th.load(inference_config['model_path'])
-    unet.load_state_dict(state_dict)
+    unet.load_state_dict(state_dict['model_state_dict'])
     unet = unet.to(device)
     print('[INFO] Successfully loaded model!')    
 

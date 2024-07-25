@@ -7,21 +7,24 @@ from torchvision.transforms import CenterCrop
 
 class Block(nn.Module):
       """Conv - ReLU - Conv - ReLU"""
-      def __init__(self, in_channels, out_channels):
+      def __init__(self, in_channels, out_channels, mid_channels=None):
             super(Block, self).__init__()
             self.in_channels = in_channels 
             self.out_channels = out_channels 
-
+            # if not mid_channels:
+            #       mid_channels = out_channels
             self.block = nn.Sequential(
                   nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
+                  nn.BatchNorm2d(out_channels), #Add: BatchNorm
                   nn.ReLU(),
                   nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
-                  nn.ReLU() #TODO : Add BatchNorm2d
+                  nn.BatchNorm2d(out_channels),
+                  nn.ReLU() 
             )
 
       def forward(self, x):
             return self.block(x)
-     
+      
 class Down(nn.Module):
       """
       Contracting path block

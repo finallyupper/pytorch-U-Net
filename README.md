@@ -27,7 +27,7 @@ python train.py
 ```
 At the beginning, you are required to login the [wandb](https://wandb.ai/site).  
   
-Run the following command to start test the model:
+Run the following command to start testing the model:
 ```
 python inference.py
 ```
